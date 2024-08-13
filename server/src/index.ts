@@ -1,7 +1,14 @@
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import express from "express";
+
+/* Middleware imports */
 import keepSessionAlive from "./middleware/keepSessionAlive";
+
+/* Route imports */
+import authRoutes from "./routes/authRoutes";
+import userRoutes from "./routes/userRoutes";
+import morgan from "morgan";
 
 dotenv.config()
 
@@ -9,27 +16,13 @@ const app = express();
 
 app.use(express.json())
 app.use(cookieParser())
+app.use(morgan("common"))
 
 app.use("/profile", keepSessionAlive)
 
+app.use("/api/auth", authRoutes)
+app.use("/api/user", userRoutes)
 
-
-app.get('/profile', (req, res) => {
-  const userCookie = req.cookies.user
-
-  if (!userCookie) {
-    return res.status(401).send("You must login first!")
-  }
-
-  const user = JSON.parse(userCookie)
-  res.send(`Welcome, ${user.name}`)
-})
-
-app.get("/logout", (req, res) => {
-  res.clearCookie("user")
-  res.send("You have logged out!")
-})
-
-app.listen(8000, () => {
-  console.log("server running on port 8000")
+app.listen(process.env.PORT, () => {
+  console.log(`server running on port - ${process.env.PORT}`)
 })

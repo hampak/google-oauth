@@ -12,7 +12,7 @@ const oauth2Client = new OAuth2Client(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI)
 
 
 const authRoutes = express.Router()
-  .get("/auth/google", (req, res) => {
+  .get("/google", (req, res) => {
     res.header("Access-Control-Allow-Origin", 'http://localhost:5173');
     res.header("Access-Control-Allow-Credentials", 'true');
     res.header("Referrer-Policy", "no-referrer-when-downgrade");
@@ -26,7 +26,7 @@ const authRoutes = express.Router()
     res.redirect(authUrl)
   })
 
-  .get("/auth/google/callback", async (req, res) => {
+  .get("/google/callback", async (req, res) => {
     const code = req.query.code
 
     if (typeof code !== "string") {
@@ -57,11 +57,16 @@ const authRoutes = express.Router()
         maxAge: 5 * 60 * 1000
       })
 
-      res.redirect("/dashboard")
+      res.redirect("/")
     } catch (err) {
       console.error('Error during authentication', err);
       res.status(500).send('Authentication failed');
     }
+  })
+
+  .get("/logout", (req, res) => {
+    res.clearCookie("user")
+    res.send("You have logged out!")
   })
 
 export default authRoutes
