@@ -1,6 +1,8 @@
 import cookieParser from "cookie-parser";
+import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
+import morgan from "morgan";
 
 /* Middleware imports */
 import keepSessionAlive from "./middleware/keepSessionAlive";
@@ -8,18 +10,21 @@ import keepSessionAlive from "./middleware/keepSessionAlive";
 /* Route imports */
 import authRoutes from "./routes/authRoutes";
 import userRoutes from "./routes/userRoutes";
-import morgan from "morgan";
 
 dotenv.config()
 
 const app = express();
 
 app.use(express.json())
+app.use(cors())
 app.use(cookieParser())
 app.use(morgan("common"))
 
-app.use("/profile", keepSessionAlive)
-
+// app.use("/profile", keepSessionAlive)
+app.use("*", (req, res, next) => {
+  const cookie = req.cookies.user
+  console.log(cookie)
+})
 app.use("/api/auth", authRoutes)
 app.use("/api/user", userRoutes)
 

@@ -4,6 +4,7 @@ import { OAuth2Client } from "google-auth-library"
 
 dotenv.config()
 
+const CLIENT_URL = process.env.CLIENT_URL
 const CLIENT_ID = process.env.CLIENT_ID
 const CLIENT_SECRET = process.env.CLIENT_SECRET
 const REDIRECT_URI = process.env.REDIRECT_URI
@@ -57,7 +58,7 @@ const authRoutes = express.Router()
         maxAge: 5 * 60 * 1000
       })
 
-      res.redirect("/")
+      res.redirect(`${CLIENT_URL}/dashboard`)
     } catch (err) {
       console.error('Error during authentication', err);
       res.status(500).send('Authentication failed');
@@ -66,7 +67,22 @@ const authRoutes = express.Router()
 
   .get("/logout", (req, res) => {
     res.clearCookie("user")
-    res.send("You have logged out!")
+    res.redirect("/")
+  })
+
+  .get("/check-auth", (req, res) => {
+    const userCookie = req.cookies.user
+
+    if (userCookie) {
+      res.status(200).json({
+        authenticated: true
+      })
+    } else {
+      res.status(401).json({
+        authenticated: false
+      })
+    }
+
   })
 
 export default authRoutes

@@ -1,17 +1,17 @@
 import express from "express"
+import checkAuthStatus from "../middleware/checkAuthStatus"
 
 const userRoutes = express.Router()
-  .get("/profile", (req, res) => {
+  .get("/profile", async (req, res) => {
     const userCookie = req.cookies.user
 
     if (!userCookie) {
       return res.status(401).send("You must login first!")
     }
-
-
     const user = JSON.parse(userCookie)
-    console.log(user)
-    res.send(`Welome, ${user.name}`)
+    res.json({
+      username: user?.name
+    })
   })
 
 export default userRoutes
