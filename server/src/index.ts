@@ -1,40 +1,35 @@
-import express from "express"
-import dotenv from "dotenv"
-import morgan from "morgan"
-import cors from "cors"
-import { requestRoute } from "./routes/requestRoute"
-import { authRoute } from "./routes/oAuth"
+import cookieParser from "cookie-parser";
+import dotenv from "dotenv";
+import express from "express";
+import keepSessionAlive from "./middleware/keepSessionAlive";
 
 dotenv.config()
 
-const app = express()
-
-app.options("*", async (req, res, next) => {
-  res.header("Access-Control-Allow-Origin", 'http://localhost:5173');
-  res.header("Access-Control-Allow-Credentials", "true");
-  res.header("Access-Control-Allow-Headers", ['X-Requested-With', 'content-type', 'credentials']);
-  res.header('Access-Control-Allow-Methods', 'GET,POST');
-  res.status(200);
-  next()
-})
-
+const app = express();
 
 app.use(express.json())
-app.use(morgan("common"))
-app.use(cors())
-// app.use(cors({
-//   origin: "http://localhost:5173",
-//   methods: ["GET", "POST"]
-// }))
+app.use(cookieParser())
 
-/* AUTH IMPORTS */
-app.use("/request", requestRoute)
-app.use("/oauth", authRoute)
+app.use("/profile", keepSessionAlive)
 
-app.get("/", async (req, res) => {
-  res.send("Sup bitch")
+
+
+app.get('/profile', (req, res) => {
+  const userCookie = req.cookies.user
+
+  if (!userCookie) {
+    return res.status(401).send("You must login first!")
+  }
+
+  const user = JSON.parse(userCookie)
+  res.send(`Welcome, ${user.name}`)
 })
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server running on port - ${process.env.PORT}`)
+app.get("/logout", (req, res) => {
+  res.clearCookie("user")
+  res.send("You have logged out!")
+})
+
+app.listen(8000, () => {
+  console.log("server running on port 8000")
 })
