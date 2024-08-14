@@ -17,9 +17,9 @@ const router = createBrowserRouter([
   {
     path: "/dashboard",
     element: (
-      // <ProtectedRoute>
-      <Dashboard />
-      // {/* </ProtectedRoute> */ }
+      <ProtectedRoute>
+        <Dashboard />
+      </ProtectedRoute >
     )
   }
 ])
@@ -30,9 +30,9 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     {/* <App /> */}
     <QueryClientProvider client={queryClient}>
-      {/* <AuthProvider isSignedIn={false}> */}
-      <RouterProvider router={router} />
-      {/* </AuthProvider> */}
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
     </QueryClientProvider>
   </StrictMode>,
 )

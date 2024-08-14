@@ -1,33 +1,28 @@
-import { createContext, PropsWithChildren, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
-import { User } from "../types/User";
-
-const AuthContext = createContext<User | null>(null)
-
-type AuthProviderProps = PropsWithChildren & {
-  isSignedIn?: boolean
+interface User {
+  id: string;
+  username: string
 }
 
-export default function AuthProvider({
-  children,
-  isSignedIn
-}: AuthProviderProps) {
-  const [user] = useState<User | null>(isSignedIn ? { id: 1, name: "Bob" } : null)
-  // const [user] = useState<User | null>({ id: 1, name: "Bob" })
-
-  return (
-    <AuthContext.Provider value={user}>
-      {children}
-    </AuthContext.Provider>
-  )
+interface AuthContextType {
+  user: User | null;
+  isLoading: boolean
 }
 
-export const useAuth = () => {
-  const context = useContext(AuthContext)
+const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
-  if (context === undefined) {
-    throw new Error("useAuth must be within an AuthProvider")
-  }
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const [user, setUser] = useState<User | null>(null)
 
-  return context
+  const { data, isLoading } = useQuery({
+    queryKey: ["auth"],
+    queryFn: async () => {
+      const response = await axios.get("/api/auth/check-auth")
+      return response.data
+    },
+
+  })
 }

@@ -5,18 +5,18 @@ import { checkAuthStatus } from "../utils/checkAuthStatus"
 
 function Home() {
 
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
 
-  useEffect(() => {
-    const verifyAuth = async () => {
-      const isAuthenticated = await checkAuthStatus();
-      if (isAuthenticated) {
-        navigate("/dashboard")
-      }
-    }
+  // useEffect(() => {
+  //   const verifyAuth = async () => {
+  //     const isAuthenticated = await checkAuthStatus();
+  //     if (isAuthenticated) {
+  //       navigate("/dashboard")
+  //     }
+  //   }
 
-    verifyAuth()
-  }, [navigate])
+  //   verifyAuth()
+  // }, [navigate])
 
   return (
     <div className="w-full h-screen flex items-center justify-center">

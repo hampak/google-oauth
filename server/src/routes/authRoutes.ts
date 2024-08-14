@@ -58,11 +58,11 @@ const authRoutes = express.Router()
         maxAge: 30 * 60 * 1000
       })
 
-      // res.redirect(`${CLIENT_URL}/dashboard`)
-      res.json({
-        userId: user?.sub,
-        name: user?.name
-      })
+      res.redirect(`${CLIENT_URL}/dashboard`)
+      // res.json({
+      //   userId: user?.sub,
+      //   name: user?.name
+      // })
     } catch (err) {
       console.error('Error during authentication', err);
       res.status(500).send('Authentication failed');
@@ -75,18 +75,19 @@ const authRoutes = express.Router()
   })
 
   .get("/check-auth", (req, res) => {
-    const userCookie = req.cookies.user
+    try {
+      const userCookie = req.cookies.user
 
-    if (userCookie) {
+      const user = JSON.parse(userCookie)
+
       res.status(200).json({
-        authenticated: true
+        id: user?.id,
+        username: user?.name
       })
-    } else {
-      res.status(401).json({
-        authenticated: false
-      })
-    }
 
+    } catch (error) {
+      res.status(400).json(null)
+    }
   })
 
 export default authRoutes
