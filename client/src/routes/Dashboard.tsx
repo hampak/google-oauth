@@ -1,22 +1,30 @@
-import { useEffect } from "react"
-import { checkAuthStatus } from "../utils/checkAuthStatus"
-import { useNavigate } from "react-router-dom"
+import { useAuth } from "../components/AuthProvider"
 
 
 const Dashboard = () => {
 
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
 
-  useEffect(() => {
-    const verifyAuth = async () => {
-      const isAuthenticated = await checkAuthStatus();
-      if (!isAuthenticated) {
-        navigate("/")
-      }
-    }
+  // useEffect(() => {
+  //   const verifyAuth = async () => {
+  //     const isAuthenticated = await checkAuthStatus();
+  //     if (!isAuthenticated) {
+  //       navigate("/")
+  //     }
+  //   }
 
-    verifyAuth()
-  }, [navigate])
+  //   verifyAuth()
+  // }, [navigate])
+
+  const { isLoading, user } = useAuth()
+
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
+
+  if (!user) {
+    return <div>You need to be logged in!</div>
+  }
 
   // const { data, isPending } = useQuery<User>({
   //   queryKey: ["user"],
@@ -39,8 +47,8 @@ const Dashboard = () => {
   return (
     <div className="w-full h-screen flex items-center justify-center">
       <div>
-        {/* <p>{data.id}</p>
-        <p>{data.username}</p> */}
+        <p>{user.id}</p>
+        <p>{user.username}</p>
         {/* <p className="text-lg font-semibold mb-3">Hi, {user}</p> */}
         {/* <div>{data}</div> */}
         <button className="p-3 bg-black text-white rounded-lg hover:bg-gray-700 transition-all">
