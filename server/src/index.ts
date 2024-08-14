@@ -10,6 +10,7 @@ import keepSessionAlive from "./middleware/keepSessionAlive";
 /* Route imports */
 import authRoutes from "./routes/authRoutes";
 import userRoutes from "./routes/userRoutes";
+import checkAuthStatus from "./middleware/checkAuthStatus";
 
 dotenv.config()
 
@@ -21,10 +22,13 @@ app.use(cookieParser())
 app.use(morgan("common"))
 
 // app.use("/profile", keepSessionAlive)
-app.use("*", (req, res, next) => {
-  const cookie = req.cookies.user
-  console.log(cookie)
-})
+// app.use("*", (req, res, next) => {
+//   const cookie = req.cookies.user
+//   console.log(cookie)
+// })
+// app.use("/dashboard", checkAuthStatus, (req, res) => {
+//   res.send("Welcome to your dashboard")
+// })
 app.use("/api/auth", authRoutes)
 app.use("/api/user", userRoutes)
 

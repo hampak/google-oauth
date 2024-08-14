@@ -2,7 +2,7 @@ import express from "express"
 import checkAuthStatus from "../middleware/checkAuthStatus"
 
 const userRoutes = express.Router()
-  .get("/profile", async (req, res) => {
+  .get("/profile", checkAuthStatus, async (req, res) => {
     const userCookie = req.cookies.user
 
     if (!userCookie) {
@@ -10,6 +10,7 @@ const userRoutes = express.Router()
     }
     const user = JSON.parse(userCookie)
     res.json({
+      id: user?.id,
       username: user?.name
     })
   })

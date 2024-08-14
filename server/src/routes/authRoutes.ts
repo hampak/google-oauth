@@ -55,10 +55,14 @@ const authRoutes = express.Router()
       }), {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        maxAge: 5 * 60 * 1000
+        maxAge: 30 * 60 * 1000
       })
 
-      res.redirect(`${CLIENT_URL}/dashboard`)
+      // res.redirect(`${CLIENT_URL}/dashboard`)
+      res.json({
+        userId: user?.sub,
+        name: user?.name
+      })
     } catch (err) {
       console.error('Error during authentication', err);
       res.status(500).send('Authentication failed');
