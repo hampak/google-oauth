@@ -18,7 +18,7 @@ const app = express();
 
 app.use(express.json())
 app.use(cors({
-  origin: CLIENT_URL,
+  origin: "https://google-oauth-inky.vercel.app",
   credentials: true
 }))
 app.use(cookieParser())
