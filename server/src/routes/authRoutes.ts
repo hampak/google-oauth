@@ -1,6 +1,6 @@
-import express from "express"
 import dotenv from "dotenv"
-import { auth, OAuth2Client } from "google-auth-library"
+import express from "express"
+import { OAuth2Client } from "google-auth-library"
 
 dotenv.config()
 
@@ -14,7 +14,7 @@ const oauth2Client = new OAuth2Client(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI)
 
 const authRoutes = express.Router()
   .get("/google", (req, res) => {
-    res.header("Access-Control-Allow-Origin", 'http://localhost:5173');
+    res.header("Access-Control-Allow-Origin", CLIENT_URL);
     res.header("Access-Control-Allow-Credentials", 'true');
     res.header("Referrer-Policy", "no-referrer-when-downgrade");
 

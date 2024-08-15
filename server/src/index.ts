@@ -5,12 +5,10 @@ import express from "express";
 import morgan from "morgan";
 
 /* Middleware imports */
-import keepSessionAlive from "./middleware/keepSessionAlive";
 
 /* Route imports */
 import authRoutes from "./routes/authRoutes";
 import userRoutes from "./routes/userRoutes";
-import checkAuthStatus from "./middleware/checkAuthStatus";
 
 dotenv.config()
 
@@ -18,7 +16,7 @@ const app = express();
 
 app.use(express.json())
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: process.env.CLIENT_URL,
   credentials: true
 }))
 app.use(cookieParser())
