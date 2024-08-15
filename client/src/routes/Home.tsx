@@ -1,22 +1,6 @@
 import { KeyRound } from "lucide-react"
-import { useEffect } from "react"
-import { useNavigate } from "react-router-dom"
-import { checkAuthStatus } from "../utils/checkAuthStatus"
 
 function Home() {
-
-  // const navigate = useNavigate()
-
-  // useEffect(() => {
-  //   const verifyAuth = async () => {
-  //     const isAuthenticated = await checkAuthStatus();
-  //     if (isAuthenticated) {
-  //       navigate("/dashboard")
-  //     }
-  //   }
-
-  //   verifyAuth()
-  // }, [navigate])
 
   return (
     <div className="w-full h-screen flex items-center justify-center">

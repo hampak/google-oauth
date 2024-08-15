@@ -1,6 +1,6 @@
 import express from "express"
 import dotenv from "dotenv"
-import { OAuth2Client } from "google-auth-library"
+import { auth, OAuth2Client } from "google-auth-library"
 
 dotenv.config()
 
@@ -23,6 +23,8 @@ const authRoutes = express.Router()
       scope: 'https://www.googleapis.com/auth/userinfo.profile  openid ',
       prompt: "consent"
     })
+
+    console.log(authUrl)
 
     res.redirect(authUrl)
   })
@@ -59,10 +61,6 @@ const authRoutes = express.Router()
       })
 
       res.redirect(`${CLIENT_URL}/dashboard`)
-      // res.json({
-      //   userId: user?.sub,
-      //   name: user?.name
-      // })
     } catch (err) {
       console.error('Error during authentication', err);
       res.status(500).send('Authentication failed');
@@ -75,18 +73,18 @@ const authRoutes = express.Router()
   })
 
   .get("/check-auth", (req, res) => {
-    try {
-      const userCookie = req.cookies.user
 
+    const userCookie = req.cookies.user
+
+    if (userCookie) {
       const user = JSON.parse(userCookie)
 
       res.status(200).json({
         id: user?.id,
         username: user?.name
       })
-
-    } catch (error) {
-      res.status(400).json(null)
+    } else {
+      res.json(null)
     }
   })
 

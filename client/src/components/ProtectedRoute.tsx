@@ -1,33 +1,30 @@
-import { PropsWithChildren, useContext } from 'react';
-import { Navigate } from 'react-router-dom';
+import { PropsWithChildren, useEffect } from "react";
+import { useNavigate } from "react-router-dom"
 
-import { AuthContext } from './AuthProvider';
+import { useAuth } from "./AuthProvider";
 
-type ProtectedRouteProps = PropsWithChildren;
+type ProtectedRouteProps = PropsWithChildren
 
-export default function ProtectedRoute({ children }: ProtectedRouteProps) {
+export default function ProtectedRoute({
+  children
+}: ProtectedRouteProps) {
+  const { user, loading } = useAuth()
+  const navigate = useNavigate();
 
-  const authContext = useContext(AuthContext)
+  useEffect(() => {
 
-  console.log(authContext)
+    if (!loading) {
+      if (user === null) {
+        navigate("/", { replace: true })
+      }
 
-  if (!authContext) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
+      if (user) {
+        navigate("/dashboard", { replace: true })
+      }
+    }
+  }, [navigate, user, loading])
 
-  const { user, isLoading } = authContext;
+  if (loading) return null
 
-  console.log(user)
-
-  if (isLoading) {
-    return (
-      <div className="w-full h-screen bg-white" />
-    )
-  }
-
-  if (!user) {
-    return <Navigate to="/" replace />
-  }
-
-  return children;
+  return children
 }
