@@ -17,7 +17,7 @@ export default function AuthProvider({
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await fetch("/api/auth/check-auth", {
+        const response = await fetch("https://server-production-04d8.up.railway.app/api/auth/check-auth", {
           credentials: "include"
         })
 
