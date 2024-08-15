@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "serve dist"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.51.23",
@@ -15,7 +16,8 @@
     "lucide-react": "^0.427.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.26.0"
+    "react-router-dom": "^6.26.0",
+    "serve": "^14.2.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.8.0",
