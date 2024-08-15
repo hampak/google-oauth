@@ -12,11 +12,13 @@ import userRoutes from "./routes/userRoutes";
 
 dotenv.config()
 
+const CLIENT_URL = process.env.CLIENT_URL
+
 const app = express();
 
 app.use(express.json())
 app.use(cors({
-  origin: process.env.CLIENT_URL,
+  origin: CLIENT_URL,
   credentials: true
 }))
 app.use(cookieParser())
