@@ -18,6 +18,7 @@ export default function AuthProvider({
     const checkAuth = async () => {
       try {
         const response = await fetch("https://server-production-04d8.up.railway.app/api/auth/check-auth", {
+          method: "GET",
           credentials: "include"
         })
 
